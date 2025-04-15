@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>BitShift Visualizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      max-width: 700px;
+      margin: auto;
+    }
+    input {
+      padding: 0.5em;
+      width: 100px;
+    }
+    code {
+      font-family: monospace;
+      background: #f4f4f4;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+    }
+    .result {
+      margin-top: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>BitShift Visualizer</h1>
+
+  <label for="number">Zahl (int):</label>
+  <input id="number" type="number" value="-22" /><br><br>
+
+  <label for="shift">Shift um:</label>
+  <input id="shift" type="number" value="2" /><br><br>
+
+  <button onclick="calculate()">Berechnen</button>
+
+  <div class="result" id="output"></div>
+
+  <script>
+    function toBinary(value) {
+      return (value >>> 0)
+        .toString(2)
+        .padStart(32, '0')
+        .replace(/(.{4})/g, '$1 ');
+    }
+
+    function calculate() {
+      const number = parseInt(document.getElementById('number').value);
+      const shift = parseInt(document.getElementById('shift').value);
+
+      const arith = number >> shift;
+      const logic = number >>> shift;
+      const left = number << shift;
+
+      const output = `
+        <h2>Original</h2>
+        <p>Wert: ${number}</p>
+        <p>Binär: <code>${toBinary(number)}</code></p>
+
+        <h2>&raquo; Arithmetischer Shift (>>)</h2>
+        <p>Wert: ${arith}</p>
+        <p>Binär: <code>${toBinary(arith)}</code></p>
+
+        <h2>&raquo; Logischer Shift (>>>)</h2>
+        <p>Wert: ${logic}</p>
+        <p>Binär: <code>${toBinary(logic)}</code></p>
+
+        <h2>&raquo; Linksshift (<<)</h2>
+        <p>Wert: ${left}</p>
+        <p>Binär: <code>${toBinary(left)}</code></p>
+      `;
+
+      document.getElementById('output').innerHTML = output;
+    }
+  </script>
+</body>
+</html>
